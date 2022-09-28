@@ -1,281 +1,165 @@
-import React, {useState, useEffect} from "react";
-import Header from "./Header"
-import "./App.css";
+import React, { useState, useEffect } from "react";
+import Header from "./Header";
+import Main from "./Main";
+import Footer from "./Footer";
+import PopupWithForm from "./PopupWithForm";
+import PopupWithImage from "./PopupWithImage";
 
 function App() {
-  return (
- <div className="page">
-  <Header/>
-    <main className="content">
-            <div className="popup popup_type_zoom">
-          <div id="img-view" className="popup__container-img">
-            <img className="popup__img" />
-            <span
-              className="popup__close popup__close_type_img-view"
-              type="button"
-              aria-label="button"
-            ></span>
-            <p className="popup__caption"></p>
-          </div>
-        </div>
+  const [isEditProfileOpen, setEditProfile] = React.useState(false);
+  const [isAddCardOpen, setAddCard] = React.useState(false);
+  const [isEditAvatarOpen, setEditAvatar] = React.useState(false);
+  const [isImgViewOpen, setIsImgViewOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = React.useState({
+    name: "",
+    link: "",
+  });
 
-        <div className="popup popup_type_profile">
-          <div id="profile" className="popup__container">
-            <button
-              type="button"
-              aria-label="button"
-              className="popup__close popup__close_type_profile"
-            ></button>
-            <h3 className="popup__title">Edit Profile</h3>
-            <form
-              novalidate
-              name="formProfile"
-              className="form form_type_profile"
-              id="form__profile"
-            >
-              <fieldset className="fieldset">
-                <div className="fieldset__container">
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Name"
-                    value="Jacques Cousteau"
-                    className="fieldset__input fieldset__input_type_name"
-                    minlength="2"
-                    maxlength="40"
-                    required
-                  />
-                  <span
-                    className="fieldset__error-message fieldset__error-type-name"
-                  ></span>
-                </div>
-                <div className="fieldset__container">
-                  <input
-                    type="text"
-                    id="about"
-                    name="about"
-                    placeholder="about"
-                    value="Explorer"
-                    className="fieldset__input fieldset__input_type_about"
-                    minlength="2"
-                    maxlength="200"
-                    required
-                  />
-                  <span
-                    className="fieldset__error-message fieldset__error-type-about"
-                  ></span>
-                </div>
-              </fieldset>
+  function handleEditProfileClick() {
+    setEditProfile(true);
+  }
 
-              <fieldset className="fieldset">
-                <button
-                  name="save"
-                  type="submit"
-                  class="fieldset__button fieldset__button-type-save"
-                  disabled
-                >
-                  Save
-                </button>
-              </fieldset>
-            </form>
-          </div>
-        </div>
+  function handleAddCardClick() {
+    setAddCard(true);
+  }
 
-        <div className="popup popup_type_card">
-          <div id="img-add" class="popup__container">
-            <button
-              type="button"
-              aria-label="button"
-              className="popup__close popup__close_type-img-add"
-            ></button>
-            <h3 className="popup__title">New place</h3>
-            <form
-              novalidate
-              name="formImg"
-              className="form form_type_img-add"
-              id="form__img"
-            >
-              <fieldset className="fieldset">
-                <div className="fieldset__container">
-                  <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    value=""
-                    placeholder="Title"
-                    className="fieldset__input fieldset__input_type-title"
-                    minlength="1"
-                    maxlength="30"
-                    required
-                  />
-                  <span
-                    className="fieldset__error-message fieldset__error-type-title"
-                  ></span>
-                </div>
+  function handleEditAvatarClick() {
+    setEditAvatar(true);
+  }
 
-                <div className="fieldset__container">
-                  <input
-                    type="link"
-                    id="link"
-                    name="link"
-                    value=""
-                    placeholder="Link"
-                    className="fieldset__input fieldset__input_type_link"
-                    required
-                  />
-                  <span
-                    className="fieldset__error-message fieldset__error-type-link"
-                  ></span>
-                </div>
-              </fieldset>
+  function handleCardClick(card) {
+    setIsImgViewOpen(true);
+    setSelectedCard({ name: card.name, link: card.link });
+  }
 
-              <fieldset className="fieldset">
-                <button
-                  name="create"
-                  type="submit"
-                  className="fieldset__button fieldset__button_type_create fieldset__button_disabled"
-                  disabled
-                >
-                  Create
-                </button>
-              </fieldset>
-            </form>
-          </div>
-        </div>
-
-        <div className="popup popup__type_delete">
-          <div id="card-delete" class="popup__container">
-            <button
-              type="button"
-              aria-label="button"
-              className="popup__close popup__close_type_delete"
-            ></button>
-            <h3 className="popup__title">Are you sure?</h3>
-            <form
-              novalidate
-              name="formDelete"
-              className="form form_type_delete"
-              id="form__delete"
-            >
-              <fieldset className="fieldset">
-                <button
-                  name="delete"
-                  type="submit"
-                  className="fieldset__button fieldset__button_type_delete"
-                >
-                  Delete
-                </button>
-              </fieldset>
-            </form>
-          </div>
-        </div>
-
-        <div className="popup popup__type_avatar">
-          <div id="change-avatar" className="popup__container">
-            <button
-              type="button"
-              aria-label="button"
-              className="popup__close popup__close_type_avatar"
-            ></button>
-            <h3 className="popup__title">Change profile picture</h3>
-            <form
-              novalidate
-              name="formAvatar"
-              className="form form_type-avatar"
-              id="form__avatar"
-            >
-              <fieldset class="fieldset">
-                <div class="fieldset__container">
-                  <input
-                    type="url"
-                    id="url"
-                    name="link"
-                    value=""
-                    placeholder="picture"
-                    class="fieldset__input fieldset__input_type-link"
-                    required
-                  />
-                  <span
-                    class="fieldset__error-message fieldset__error-type-link"
-                  ></span>
-                </div>
-              </fieldset>
-
-              <fieldset class="fieldset">
-                <button
-                  name="create"
-                  type="submit"
-                  class="fieldset__button fieldset__button_type_create"
-                >
-                  Create
-                </button>
-              </fieldset>
-            </form>
-          </div>
-        </div>
-
-
+  function closeAll() {
+    setEditProfile(false);
+    setAddCard(false);
+    setEditAvatar(false);
+    setIsImgViewOpen(false);
+  }
   
-    </div>
- 
+  return (
+    <div className="page">
+      <Header />
+      <Main
+        onEditProfileClick={handleEditProfileClick}
+        onAddCardClick={handleAddCardClick}
+        onEditAvatarClick={handleEditAvatarClick}
+        onCardClick={handleCardClick}
+      />
+      <Footer />
 
-       
-        <section class="top">
-          <div class="top__container">
-            <img
-              src="<%=require('./images/header__img.png')%>"
-              alt="Profile picture"
-              class="top__img"
+      <PopupWithForm
+        title="Edit Profile"
+        name="edit"
+        isOpen={isEditProfileOpen}
+        onClose={closeAll}
+      >
+        <fieldset className="fieldset">
+          <div className="fieldset__container">
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Name"
+              defaultValue=""
+              className="fieldset__input fieldset__input_type_name"
+              minLength={2}
+              maxLength={40}
+              required
             />
+            <span className="fieldset__error-message fieldset__error-type-name" />
           </div>
-
-          <div class="text">
-            <div class="text__title">
-              <h1 class="text__name">Jacques Cousteau</h1>
-              <button
-                type="button"
-                aria-label="button"
-                class="text__edit"
-              ></button>
-            </div>
-            <p class="text__about">Explorer</p>
+          <div className="fieldset__container">
+            <input
+              type="text"
+              id="about"
+              name="about"
+              placeholder="about"
+              defaultValue=""
+              className="fieldset__input fieldset__input_type_about"
+              minLength={2}
+              maxLength={200}
+              required
+            />
+            <span className="fieldset__error-message fieldset__error-type-about" />
           </div>
-          <!---->
-          <button
-            type="button"
-            aria-label="button"
-            class="top__plus-box"
-          ></button>
-        </section>
+        </fieldset>
+      </PopupWithForm>
 
-        <section class="images">
-          <ul class="gallery"></ul>
-        </section>
-      </main>
-      <footer class="footer">
-  <p class="footer__text">© 2021 Around The U.S.</p>
-</footer>;
-
-    <template id="gallery__item">
-      <li class="gallery__item">
-        <img src=" " alt=" " class="gallery__img" />
-        <span class="gallery__bin"></span>
-        <div class="desc">
-          <h2 class="desc__text"></h2>
-          <div class="like">
-            <button
-              type="button"
-              aria-label="button"
-              id="like__button"
-              class="like__button"
-            ></button>
-            <div class="like__counter"></div>
+      <PopupWithForm
+        title="NewPlace"
+        name="img-add"
+        isOpen={isAddCardOpen}
+        onClose={closeAll}
+      >
+        <fieldset className="fieldset">
+          <div className="fieldset__container">
+            <input
+              type="text"
+              id="title"
+              name="title"
+              defaultValue
+              placeholder="Title"
+              className="fieldset__input fieldset__input_type-title"
+              minLength={1}
+              maxLength={30}
+              required
+            />
+            <span className="fieldset__error-message fieldset__error-type-title" />
           </div>
-        </div>
-      </li>
-    </template>
+          <div className="fieldset__container">
+            <input
+              type="link"
+              id="link"
+              name="link"
+              defaultValue
+              placeholder="Link"
+              className="fieldset__input fieldset__input_type_link"
+              required
+            />
+            <span className="fieldset__error-message fieldset__error-type-link" />
+          </div>
+        </fieldset>
+      </PopupWithForm>
+
+      <PopupWithForm
+        title="Are you sure?"
+        onClose={closeAll}
+        name="delete"
+        buttonText="Delete"
+      />
+
+      <PopupWithForm
+        title="Change profile picture"
+        name="avatar"
+        buttonText="Create"
+        isOpen={isEditAvatarOpen}
+        onClose={closeAll}
+      >
+        <fieldset className="fieldset">
+          <div className="fieldset__container">
+            <input
+              type="url"
+              id="url"
+              name="link"
+              defaultValue
+              placeholder="picture"
+              className="fieldset__input fieldset__input_type-link"
+              required
+            />
+            <span className="fieldset__error-message fieldset__error-type-link" />
+          </div>
+        </fieldset>
+      </PopupWithForm>
+
+      <PopupWithImage
+        card={selectedCard}
+        isOpen={isImgViewOpen}
+        onClose={closeAll}
+      />
+    </div>
   );
 }
-
 export default App;

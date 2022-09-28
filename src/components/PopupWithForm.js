@@ -1,5 +1,5 @@
-import { Popup } from "./Popup";
 import React from "react";
+import close from "../images/close-X.svg";
 function PopupWithForm({
   title,
   name,
@@ -11,11 +11,9 @@ function PopupWithForm({
   return (
     <div classname={`popup popup__type_${name} ${isOpen ? "popup_open" : ""}`}>
       <div className="popup__container">
-        <button
-          type="button"
-          className="popup__close"
-          onClick={onClose}
-        ></button>
+        <button type="button" className="popup__close" onClick={onClose}>
+          <img src={close} />
+        </button>
         <h3 className="popup__caption">{title}</h3>
         <form className="form" name="name" noValidate>
           {children}

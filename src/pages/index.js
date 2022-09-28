@@ -7,6 +7,7 @@ import PopupWithSubmit from "../components/PopupWithSubmit";
 import { Section } from "../components/Section";
 import { UserInfo } from "../components/UserInfo";
 import { api } from "../components/Api";
+import App from "../components/App";
 import {
   galleryWrap,
   avatarPopup,
